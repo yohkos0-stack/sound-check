@@ -1,296 +1,205 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica; min-height: 11.0px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>音環境セルフチェック（即時スコア）</title>
+  <style>
+    :root { --fg:#111; --muted:#666; --line:#e6e6e6; --bg:#fff; --chip:#f6f6f6; }
+    body { font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+           margin: 0; color: var(--fg); background: var(--bg); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 28px; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    .note { color: var(--muted); font-size: 13px; line-height: 1.55; margin-bottom: 14px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 860px){ .grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .card { border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+    .card h2 { font-size: 16px; margin: 0 0 6px; }
+    .sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+    .sec { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 10px; }
+    .sec:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    .label { display:flex; gap:10px; align-items:flex-start; padding: 6px 0; }
+    .label input { margin-top: 2px; transform: scale(1.1); }
+    .label span { font-size: 13px; line-height: 1.45; }
+    .pill { display:inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--chip); margin-left: 6px; }
+    .result { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin: 14px 0 10px; }
+    .scorebox { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 220px; }
+    .scorebox .t { font-size: 12px; color: var(--muted); }
+    .scorebox .v { font-size: 18px; font-weight: 700; margin-top: 2px; }
+    .comment { font-size: 13px; margin-top: 8px; line-height: 1.6; }
+    .muted { color: var(--muted); }
+    button { border: 1px solid var(--line); background: #fff; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+    button:hover { background: #fafafa; }
+    .foot { margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.5; }
   </style>
 </head>
+
 <body>
-<p class="p1">&lt;!doctype html&gt;</p>
-<p class="p1">&lt;html lang="ja"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width,initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;音環境セルフチェック（即時スコア）&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root { --fg:#111; --muted:#666; --line:#e6e6e6; --bg:#fff; --chip:#f6f6f6; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">           </span>margin: 0; color: var(--fg); background: var(--bg); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 28px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1 { font-size: 20px; margin: 0 0 8px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.note { color: var(--muted); font-size: 13px; line-height: 1.55; margin-bottom: 14px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.grid { display: grid; grid-template-columns: 1fr; gap: 12px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 860px){ .grid { grid-template-columns: 1fr 1fr 1fr; } }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card { border: 1px solid var(--line); border-radius: 12px; padding: 12px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card h2 { font-size: 16px; margin: 0 0 6px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sec { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sec:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.label { display:flex; gap:10px; align-items:flex-start; padding: 6px 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.label input { margin-top: 2px; transform: scale(1.1); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.label span { font-size: 13px; line-height: 1.45; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.pill { display:inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--chip); margin-left: 6px; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.result { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin: 14px 0 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scorebox { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scorebox .t { font-size: 12px; color: var(--muted); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scorebox .v { font-size: 18px; font-weight: 700; margin-top: 2px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.comment { font-size: 13px; color: var(--fg); margin-top: 8px; line-height: 1.6; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.muted { color: var(--muted); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button { border: 1px solid var(--line); background: #fff; padding: 8px 10px; border-radius: 10px; cursor: pointer; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:hover { background: #fafafa; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.foot { margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.5; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;音環境セルフチェック（即時スコア）&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="note"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>チェックを入れると、各カテゴリーのスコアがその場で更新されます。&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="pill"&gt;良い項目＝＋1&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="pill"&gt;気になる項目＝−1&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>※このWeb版は、紙版チェックシート（建物・子ども・保育者の3領域）を「＋／−」で簡略化してスコア化したものです。 :contentReference[oaicite:1]{index=1}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="result"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="scorebox" id="box-build"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="t"&gt;建物・窓や壁&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="v"&gt;&lt;span id="s-build"&gt;0&lt;/span&gt; &lt;span class="muted"&gt;（−5〜＋5）&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="comment" id="c-build"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="scorebox" id="box-kids"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="t"&gt;子どもの声や活動&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="v"&gt;&lt;span id="s-kids"&gt;0&lt;/span&gt; &lt;span class="muted"&gt;（−5〜＋5）&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="comment" id="c-kids"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="scorebox" id="box-teach"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="t"&gt;保育者の声かけや会話&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="v"&gt;&lt;span id="s-teach"&gt;0&lt;/span&gt; &lt;span class="muted"&gt;（−5〜＋5）&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="comment" id="c-teach"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="resetBtn" type="button"&gt;すべてリセット&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="grid"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- 建物・窓や壁 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card" data-cat="build"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;建物・窓や壁&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sub"&gt;空間の“音の抜け”と、室内の“柔らかさ（吸音）”の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;＋&lt;/span&gt; 良い状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;窓の外の2方向以上が広い空間&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;窓は1面以上、広い空間へ開放できる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;にぎやかな時でも窓は開放できる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;床の一部分に畳・カーペットがある&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;大きくて柔らかいものがいくつもある（カーテン／クッション等）&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;−&lt;/span&gt; 気になる状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;窓を閉めることが多い／窓は通常は閉めている&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;壁・天井に凸凹・柔らかい素材がない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;天井・壁・床がつるつる、硬い素材&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;隣室のクラス活動がはっきり聴こえる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="build" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;音が抜ける園庭や空間が外にない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- 子どもの声や活動 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card" data-cat="kids"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;子どもの声や活動&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sub"&gt;“聞こえ合い”と、“活動の分化”の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;＋&lt;/span&gt; 良い状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;静けさの音（「しーん」等）や環境のかすかな音を聴く活動がある&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;保育者が静かにすると子どもも静かに&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;子ども同士で内緒話ができる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;呼ぶと多くの子が注意を向ける&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;活動の場ごとに会話が成り立つ&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;−&lt;/span&gt; 気になる状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;幼児同士の会話があまり聴き取れない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;呼んでも聞こえないことが多い&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;子どもの言葉が聞きとりにくい&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;大声が多くて会話は続きにくい&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="kids" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;泣き声・叫び声などの大声が多い／個々の言葉がほぼ聞き取れない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- 保育者の声かけや会話 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card" data-cat="teach"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;保育者の声かけや会話&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sub"&gt;保育者の“声の負担”と“コミュニケーションのしやすさ”の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;＋&lt;/span&gt; 良い状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;緊急時以外、大声を出すことはない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;静かな声で打ち合わせができる（ささやき声／普通の声）&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;子どもと一対一の会話がいつもできる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;大抵は子どもの顔を見て声かけする&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;室内での打ち合わせは難しいが「できる」&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sec"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sub"&gt;&lt;span class="pill"&gt;−&lt;/span&gt; 気になる状態の目安&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;保育者同士が話すため声を張り上げる&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;子どもによく大声で呼びかける／呼びかけの時に手を打つ・音を鳴らす&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;室内で子どもと一対一で話せない&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;大声が頻繁で保育者に声がれがある&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="label"&gt;&lt;input type="checkbox" data-cat="teach" data-w="-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;音の大きさに疲れを感じる／保育者に耳の問題が出ている&lt;/span&gt;&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="foot"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>スコアの目安：&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>＋3〜＋5：状態は良好（維持・微調整）／ ＋1〜＋2：概ね良い（気になる点を改善）／ 0：中間（状況により差が出やすい）／ −1〜−2：負担が出やすい（改善推奨）／ −3〜−5：要改善（優先度高）&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>※あくまでセルフチェックであり、精密な測定（騒音レベル・残響時間等）の代替ではありません。</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const comments = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>build: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 3,<span class="Apple-converted-space">  </span>txt: "良好。音が外へ抜けやすく、室内の反射も抑えられている可能性が高いです。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 1,<span class="Apple-converted-space">  </span>txt: "概ね良い。窓の運用や「柔らかい面」を少し増やすと安定します。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 0,<span class="Apple-converted-space">  </span>txt: "中間。状況によって響きやすい日が出るかもしれません。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -2, txt: "負担が出やすい。まずは“硬い面を減らす（布・カーペット等）”から。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -5, txt: "要改善。音がこもり／反射しやすい可能性。吸音の導入・窓運用の見直しを優先。"}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>kids: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 3,<span class="Apple-converted-space">  </span>txt: "良好。聞こえ合いが成立し、活動の場ごとの会話が立ちやすい状態です。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 1,<span class="Apple-converted-space">  </span>txt: "概ね良い。呼びかけへの反応や“内緒話”が可能かを目安に微調整を。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 0,<span class="Apple-converted-space">  </span>txt: "中間。時間帯や活動内容で聞き取りやすさが変動しやすいかもしれません。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -2, txt: "負担が出やすい。会話が続きにくいなら、まずは響きを減らす工夫を。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -5, txt: "要改善。大声が増えやすい状態。静けさを扱う活動＋吸音など複合対策が有効です。"}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>teach: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 3,<span class="Apple-converted-space">  </span>txt: "良好。保育者の声の負担が少なく、打ち合わせや個別会話が成立しやすいです。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 1,<span class="Apple-converted-space">  </span>txt: "概ね良い。声量が上がる場面を特定して“場所/時間の工夫”を。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: 0,<span class="Apple-converted-space">  </span>txt: "中間。人が多い時や活動が重なる時に声の負担が出るかもしれません。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -2, txt: "負担が出やすい。呼びかけ方法（視線・近づく等）と環境調整のセットが有効です。"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{min: -5, txt: "要改善。声・耳の不調や疲労が出やすい状態。改善の優先度が高いです。"}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function pickComment(cat, score){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const arr = comments[cat];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (const c of arr){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (score &gt;= c.min) return c.txt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function calc(cat){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>let s = 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll(`input[data-cat="${cat}"]`).forEach(cb =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (cb.checked) s += Number(cb.dataset.w);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return s;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function update(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const b = calc("build");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const k = calc("kids");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const t = calc("teach");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("s-build").textContent = b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("s-kids").textContent<span class="Apple-converted-space">  </span>= k;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("s-teach").textContent = t;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("c-build").textContent = pickComment("build", b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("c-kids").textContent<span class="Apple-converted-space">  </span>= pickComment("kids", k);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("c-teach").textContent = pickComment("teach", t);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.querySelectorAll('input[type="checkbox"]').forEach(cb =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cb.addEventListener("change", update);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("resetBtn").addEventListener("click", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll('input[type="checkbox"]').forEach(cb =&gt; cb.checked = false);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>update();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>update();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="wrap">
+    <h1>音環境セルフチェック（即時スコア）</h1>
+    <div class="note">
+      チェックを入れると、各カテゴリーのスコアがその場で更新されます。<br>
+      <span class="pill">良い項目＝＋1</span>
+      <span class="pill">気になる項目＝−1</span>
+      <br>
+      ※セルフチェック（簡易指標）です。精密な測定（騒音レベル・残響時間等）の代替ではありません。
+    </div>
+
+    <div class="result">
+      <div class="scorebox">
+        <div class="t">建物・窓や壁</div>
+        <div class="v"><span id="s-build">0</span> <span class="muted">（−5〜＋5）</span></div>
+        <div class="comment" id="c-build"></div>
+      </div>
+      <div class="scorebox">
+        <div class="t">子どもの声や活動</div>
+        <div class="v"><span id="s-kids">0</span> <span class="muted">（−5〜＋5）</span></div>
+        <div class="comment" id="c-kids"></div>
+      </div>
+      <div class="scorebox">
+        <div class="t">保育者の声かけや会話</div>
+        <div class="v"><span id="s-teach">0</span> <span class="muted">（−5〜＋5）</span></div>
+        <div class="comment" id="c-teach"></div>
+      </div>
+
+      <button id="resetBtn" type="button">すべてリセット</button>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <h2>建物・窓や壁</h2>
+        <div class="sub">空間の“音の抜け”と、室内の“柔らかさ（吸音）”の目安</div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">＋</span> 良い状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="1"><span>窓の外の2方向以上が広い空間</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="1"><span>窓は1面以上、広い空間へ開放できる</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="1"><span>にぎやかな時でも窓は開放できる</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="1"><span>床の一部分に畳・カーペットがある</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="1"><span>大きくて柔らかいものが複数ある（カーテン／クッション等）</span></label>
+        </div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">−</span> 気になる状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="-1"><span>窓を閉めることが多い／窓は通常は閉めている</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="-1"><span>壁・天井に凸凹・柔らかい素材がない</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="-1"><span>天井・壁・床がつるつる、硬い素材</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="-1"><span>隣室のクラス活動がはっきり聴こえる</span></label>
+          <label class="label"><input type="checkbox" data-cat="build" data-w="-1"><span>音が抜ける園庭や空間が外にない</span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>子どもの声や活動</h2>
+        <div class="sub">“聞こえ合い”と、“活動の分化”の目安</div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">＋</span> 良い状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="1"><span>静けさの音や環境のかすかな音を聴く活動がある</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="1"><span>保育者が静かにすると子どもも静かに</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="1"><span>子ども同士で内緒話ができる</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="1"><span>呼ぶと多くの子が注意を向ける</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="1"><span>活動の場ごとに会話が成り立つ</span></label>
+        </div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">−</span> 気になる状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="-1"><span>幼児同士の会話があまり聴き取れない</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="-1"><span>呼んでも聞こえないことが多い</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="-1"><span>子どもの言葉が聞きとりにくい</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="-1"><span>大声が多くて会話は続きにくい</span></label>
+          <label class="label"><input type="checkbox" data-cat="kids" data-w="-1"><span>泣き声・叫び声などの大声が多い／個々の言葉がほぼ聞き取れない</span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>保育者の声かけや会話</h2>
+        <div class="sub">保育者の“声の負担”と“コミュニケーションのしやすさ”の目安</div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">＋</span> 良い状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="1"><span>緊急時以外、大声を出すことはない</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="1"><span>静かな声（ささやき声／普通の声）で打ち合わせができる</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="1"><span>子どもと一対一の会話がいつもできる</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="1"><span>大抵は子どもの顔を見て声かけする</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="1"><span>室内での打ち合わせは「難しいができる」</span></label>
+        </div>
+
+        <div class="sec">
+          <div class="sub"><span class="pill">−</span> 気になる状態の目安</div>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="-1"><span>保育者同士が話すため声を張り上げる</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="-1"><span>子どもによく大声で呼びかける／呼びかけの時に手を打つ・音を鳴らす</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="-1"><span>室内で子どもと一対一で話せない</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="-1"><span>大声が頻繁で保育者に声がれがある</span></label>
+          <label class="label"><input type="checkbox" data-cat="teach" data-w="-1"><span>音の大きさに疲れを感じる／保育者に耳の問題が出ている</span></label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      スコアの目安：＋3〜＋5（良好）／＋1〜＋2（概ね良い）／0（中間）／−1〜−2（負担が出やすい）／−3〜−5（要改善）
+    </div>
+  </div>
+
+  <script>
+    const comments = {
+      build: [
+        {min: 3,  txt: "良好。音が外へ抜けやすく、室内の反射も抑えられている可能性が高いです。"},
+        {min: 1,  txt: "概ね良い。窓の運用や「柔らかい面」を少し増やすと安定します。"},
+        {min: 0,  txt: "中間。状況によって響きやすい日が出るかもしれません。"},
+        {min: -2, txt: "負担が出やすい。まずは“硬い面を減らす（布・カーペット等）”から。"},
+        {min: -999, txt:"要改善。吸音の導入・窓運用の見直しを優先してください。"}
+      ],
+      kids: [
+        {min: 3,  txt: "良好。聞こえ合いが成立し、活動の場ごとの会話が立ちやすい状態です。"},
+        {min: 1,  txt: "概ね良い。呼びかけへの反応や“内緒話”が可能かを目安に微調整を。"},
+        {min: 0,  txt: "中間。時間帯や活動内容で聞き取りやすさが変動しやすいかもしれません。"},
+        {min: -2, txt: "負担が出やすい。会話が続きにくいなら、まずは響きを減らす工夫を。"},
+        {min: -999, txt:"要改善。静けさを扱う活動＋環境調整（吸音など）の併用が有効です。"}
+      ],
+      teach: [
+        {min: 3,  txt: "良好。声の負担が少なく、打ち合わせや個別会話が成立しやすいです。"},
+        {min: 1,  txt: "概ね良い。声量が上がる場面を特定して“場所/時間の工夫”を。"},
+        {min: 0,  txt: "中間。人が多い時や活動が重なる時に声の負担が出るかもしれません。"},
+        {min: -2, txt: "負担が出やすい。呼びかけ方法と環境調整をセットで。"},
+        {min: -999, txt:"要改善。声・耳の不調や疲労が出やすい状態です。改善の優先度が高いです。"}
+      ]
+    };
+
+    function pickComment(cat, score){
+      for (const c of comments[cat]) if (score >= c.min) return c.txt;
+      return "";
+    }
+
+    function calc(cat){
+      let s = 0;
+      document.querySelectorAll(`input[data-cat="${cat}"]`).forEach(cb => {
+        if (cb.checked) s += Number(cb.dataset.w);
+      });
+      return s;
+    }
+
+    function update(){
+      const b = calc("build");
+      const k = calc("kids");
+      const t = calc("teach");
+      document.getElementById("s-build").textContent = b;
+      document.getElementById("s-kids").textContent  = k;
+      document.getElementById("s-teach").textContent = t;
+      document.getElementById("c-build").textContent = pickComment("build", b);
+      document.getElementById("c-kids").textContent  = pickComment("kids", k);
+      document.getElementById("c-teach").textContent = pickComment("teach", t);
+    }
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener("change", update));
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      update();
+    });
+
+    update();
+  </script>
 </body>
 </html>
